@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packages xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <package id="SocketIOClient" version="3.0.6" targetFramework="netstandard2.0" allowedVersions="[3.0.6]" />
+</packages>

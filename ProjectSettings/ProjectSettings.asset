@@ -610,7 +610,8 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Standalone: ZIP_AVAILABLE;NUGET_PACKAGE_READY
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
@@ -624,7 +625,7 @@ PlayerSettings:
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 1
-  assemblyVersionValidation: 1
+  assemblyVersionValidation: 0
   gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1

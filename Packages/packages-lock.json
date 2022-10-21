@@ -166,6 +166,49 @@
       },
       "url": "https://packages.unity.com"
     },
+    "org.kumas.nuget-importer": {
+      "version": "https://github.com/kumaS-nu/NuGet-importer-for-Unity.git?path=NuGetImporterForUnity/Packages/NuGet Importer",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "d0ecaedaee6c37aff4dcd2aa9830368f576c4b45"
+    },
+    "org.nuget.microsoft.bcl.asyncinterfaces": {
+      "version": "file:Microsoft.Bcl.AsyncInterfaces",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "org.nuget.socketioclient": {
+      "version": "file:SocketIOClient",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "org.nuget.system.reactive": {
+      "version": "file:System.Reactive",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "org.nuget.system.runtime.compilerservices.unsafe": {
+      "version": "file:System.Runtime.CompilerServices.Unsafe",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "org.nuget.system.text.encodings.web": {
+      "version": "file:System.Text.Encodings.Web",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "org.nuget.system.text.json": {
+      "version": "file:System.Text.Json",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
