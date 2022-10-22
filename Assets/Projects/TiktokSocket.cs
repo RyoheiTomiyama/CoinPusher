@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using UnityEngine;
 using SocketIOClient;
 using Unity.VisualScripting;
-using UnityEngine.Events;
 using System.Threading;
+using SocketIOClient.Transport;
+
 
 public class BaseData
 {
@@ -54,14 +53,11 @@ public class TiktokSocket : MonoBehaviour
         context.Post(callback, null);
     }
 
-
     private void LikeHandler(LikeData data)
     {
         RunMainThread((_) =>
         {
-
             Debug.Log("LikeHandler");
-            Debug.Log("Trigger ScoreUpp");
             Debug.LogWarning(CoinManager.name);
             CustomEvent.Trigger(CoinManager, "ShotCoin");
         });
@@ -69,24 +65,49 @@ public class TiktokSocket : MonoBehaviour
 
     // Start is called before the first frame update
     async void Start()
-
     {
         // Main Thread Context
         context = SynchronizationContext.Current;
 
-        client = new SocketIO("ws://localhost:3400");
+        client = new SocketIO("ws://localhost:3400", new SocketIOOptions
+        {
+            Reconnection = false,
+            Transport = TransportProtocol.WebSocket,
+        });
         Debug.Log("socket start");
+
+        client.On("chat", (response) =>
+        {
+            Debug.Log(response);
+        });
+        client.On("like", (response) =>
+        {
+            Debug.Log(response);
+            var data = response.GetValue<LikeData>();
+            // Debug.Log(data.Nickname);
+            LikeHandler(data);
+        });
+        client.On("gift", (response) =>
+        {
+            Debug.Log(response);
+            // var data = response.GetValue<GiftData>();
+            // Debug.Log(response);
+            // Debug.Log(data.GiftName);
+        });
+
+
         client.OnConnected += async (sender, e) =>
         {
+
             Debug.Log("hello socket!");
-            Debug.Log("hello sockcet!");
-            LikeHandler(new LikeData { });
+            // LikeHandler(new LikeData { });
 
 
             // var username = "romanioli3";
             // var username = "yamada_nu";
             // var username = "joemsaaaaa";
             await client.EmitAsync("enter", new { username = liveUser });
+            Debug.Log("emit enter ");
         };
         client.OnError += (sender, e) =>
         {
@@ -97,23 +118,6 @@ public class TiktokSocket : MonoBehaviour
             Debug.Log("attempt reconnect websocket");
             Debug.Log(client.Options.ReconnectionAttempts);
         };
-
-        client.On("chat", (response) =>
-        {
-            Debug.Log(response);
-        });
-        client.On("like", (response) =>
-        {
-            var data = response.GetValue<LikeData>();
-            Debug.Log(data.Nickname);
-            LikeHandler(data);
-        });
-        client.On("gift", (response) =>
-        {
-            var data = response.GetValue<GiftData>();
-            Debug.Log(response);
-            Debug.Log(data.GiftName);
-        });
 
         await client.ConnectAsync();
     }
@@ -131,7 +135,8 @@ public class TiktokSocket : MonoBehaviour
         {
             Debug.Log("disconnect");
             await client.DisconnectAsync();
-            // client.Dispose();
+            client.Dispose();
+            client = null;
         }
     }
 
