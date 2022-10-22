@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using System.Threading;
 using SocketIOClient.Transport;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class BaseData
 {
@@ -17,7 +18,11 @@ public class BaseData
     [JsonPropertyName("profilePictureUrl")]
     public string ProfilePictureUrl { get; set; }
 }
-public class LikeData : BaseData { }
+public class LikeData : BaseData
+{
+    [JsonPropertyName("likeCount")]
+    public int LikeCount { get; set; }
+}
 public class GiftData : BaseData
 {
     [JsonPropertyName("diamondCount")]
@@ -55,21 +60,22 @@ public class TiktokSocket : MonoBehaviour
         context.Post(callback, null);
     }
 
-    private void ShotCoin(int num = 1)
+    private async void ShotCoin(int num = 1)
     {
-        foreach (var _ in new List<int>(num))
+        for (var i = 0; i < num; i++)
         {
             RunMainThread((_) =>
             {
                 CustomEvent.Trigger(CoinManager, "ShotCoin");
             });
+            await Task.Delay(100);
         }
     }
 
     private void LikeHandler(LikeData data)
     {
-        Debug.Log("LikeHandler");
-        ShotCoin();
+        Debug.Log($"LikeHandler {data.LikeCount}");
+        ShotCoin(data.LikeCount);
     }
     private void GiftHandler(GiftData data)
     {
