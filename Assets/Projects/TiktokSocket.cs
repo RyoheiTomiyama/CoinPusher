@@ -4,7 +4,7 @@ using SocketIOClient;
 using Unity.VisualScripting;
 using System.Threading;
 using SocketIOClient.Transport;
-
+using System.Collections.Generic;
 
 public class BaseData
 {
@@ -48,19 +48,56 @@ public class TiktokSocket : MonoBehaviour
 
     SynchronizationContext context;
 
+    Dictionary<string, int> giftRepeaters;
+
     private void RunMainThread(SendOrPostCallback callback)
     {
         context.Post(callback, null);
     }
 
+    private void ShotCoin(int num = 1)
+    {
+        foreach (var _ in new List<int>(num))
+        {
+            RunMainThread((_) =>
+            {
+                CustomEvent.Trigger(CoinManager, "ShotCoin");
+            });
+        }
+    }
+
     private void LikeHandler(LikeData data)
     {
-        RunMainThread((_) =>
+        Debug.Log("LikeHandler");
+        ShotCoin();
+    }
+    private void GiftHandler(GiftData data)
+    {
+        Debug.Log("GiftHandler");
+        var n = data.RepeatCount;
+
+        if (giftRepeaters.ContainsKey(data.UniqueId))
         {
-            Debug.Log("LikeHandler");
-            Debug.LogWarning(CoinManager.name);
-            CustomEvent.Trigger(CoinManager, "ShotCoin");
-        });
+            // 前回通知との差分を計算
+            var prevCount = giftRepeaters[data.UniqueId];
+            n -= prevCount;
+            // 連打が終わったら
+            if (data.RepeatEnd)
+            {
+                giftRepeaters.Remove(data.UniqueId);
+            }
+            // 連打の途中なら
+            else
+            {
+                giftRepeaters[data.UniqueId] = data.RepeatCount;
+            }
+        }
+        // 連打の初回なら
+        else if (!data.RepeatEnd)
+        {
+            giftRepeaters.Add(data.UniqueId, data.RepeatCount);
+        }
+        ShotCoin(data.DiamondCount * n);
     }
 
     // Start is called before the first frame update
@@ -89,8 +126,8 @@ public class TiktokSocket : MonoBehaviour
         });
         client.On("gift", (response) =>
         {
-            Debug.Log(response);
-            // var data = response.GetValue<GiftData>();
+            var data = response.GetValue<GiftData>();
+            GiftHandler(data);
             // Debug.Log(response);
             // Debug.Log(data.GiftName);
         });
