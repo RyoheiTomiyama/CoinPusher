@@ -612,7 +612,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    Standalone: ZIP_AVAILABLE;DEBUG
+    Standalone: ZIP_AVAILABLE;DEBUG;NUGET_PACKAGE_READY
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
