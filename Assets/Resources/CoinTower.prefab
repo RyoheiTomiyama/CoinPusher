@@ -9328,7 +9328,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3832352607200065354, guid: 197c865abdff24b2da86c28be0e5f449, type: 3}
       propertyPath: m_Name
-      value: Coin (1)
+      value: CoinBasis
+      objectReference: {fileID: 0}
+    - target: {fileID: 3832352607200065354, guid: 197c865abdff24b2da86c28be0e5f449, type: 3}
+      propertyPath: m_TagString
+      value: Coin
       objectReference: {fileID: 0}
     - target: {fileID: 3832352607200065359, guid: 197c865abdff24b2da86c28be0e5f449, type: 3}
       propertyPath: m_RootOrder
