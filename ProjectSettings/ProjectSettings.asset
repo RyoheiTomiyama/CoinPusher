@@ -612,6 +612,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
+    Android: ZIP_AVAILABLE;NUGET_PACKAGE_READY
     Standalone: ZIP_AVAILABLE;DEBUG;NUGET_PACKAGE_READY
   additionalCompilerArguments: {}
   platformArchitecture: {}
